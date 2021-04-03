@@ -1,0 +1,18 @@
+{
+  "name": "NeBu-Socket",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Socket service for nebu",
+  "main": "index.js",
+  "scripts": {
+    "serve": "hexo serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.0.1"    
+  }
+}
