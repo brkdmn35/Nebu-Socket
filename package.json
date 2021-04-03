@@ -1,18 +1,12 @@
 {
-  "name": "NeBu-Socket",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Socket service for nebu",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "name": "socket-chat-example",
+  "version": "0.0.1",
+  "description": "my first socket.io app",
   "dependencies": {
-    "express": "^4.17.1",
-    "socket.io": "^4.0.1"    
+    "express": "^4.15.2",
+    "socket.io": "^1.7.3"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }

@@ -8,7 +8,6 @@ var port = process.env.PORT || 3000;
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
-app.use(express.static('public'));
 
 // Socket io 
 io.on('connection', function(socket){

@@ -1,48 +1,255 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Socket.IO chat</title>
-    <style>
-      body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
-      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
-      #input:focus { outline: none; }
-      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+        <title>Medianova Chat</title>
 
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages > li { padding: 0.5rem 1rem; }
-      #messages > li:nth-child(odd) { background: #efefef; }
-    </style>
-  </head>
-  <body>
-    <ul id="messages"></ul>
-    <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
-    <script src="/socket.io/socket.io.js"></script>
+        <meta name="description" content="Dashmix - Bootstrap 4 Admin Template &amp; UI Framework created by pixelcave and published on Themeforest">
+        <meta name="author" content="pixelcave">
+        <meta name="robots" content="noindex, nofollow">
 
-    <script>
-      var socket = io();
+        <!-- Open Graph Meta -->
+        <meta property="og:title" content="Dashmix - Bootstrap 4 Admin Template &amp; UI Framework">
+        <meta property="og:site_name" content="Dashmix">
+        <meta property="og:description" content="Dashmix - Bootstrap 4 Admin Template &amp; UI Framework created by pixelcave and published on Themeforest">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="">
+        <meta property="og:image" content="">
 
-      var messages = document.getElementById('messages');
-      var form = document.getElementById('form');
-      var input = document.getElementById('input');
+        <!-- Icons -->
+        <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+        <link rel="shortcut icon" href="assets/media/favicons/favicon.png">
+        <link rel="icon" type="image/png" sizes="192x192" href="assets/media/favicons/favicon-192x192.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/media/favicons/apple-touch-icon-180x180.png">
+        <!-- END Icons -->
 
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        if (input.value) {
-          socket.emit('chat message', input.value);
-          input.value = '';
-        }
-      });
+        <!-- Stylesheets -->
+        <!-- Fonts and Dashmix framework -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,400i,600,700">
+        <link rel="stylesheet" id="css-main" href="assets/css/dashmix.min.css">
+        <link rel="stylesheet" id="css-theme" href="assets/css/themes/xdream.min.css">
+        <!-- END Stylesheets -->
+    </head>
+    <body>
+      <div id="page-container" class="sidebar-o side-scroll">
+            <nav id="sidebar" aria-label="Main Navigation">
+                <!-- Side Header -->
+                <div class="content-header bg-header-dark">
+                    <!-- Logo -->
+                    <a class="link-fx font-size-lg text-white" href="index.html">
+                        <span class="smini-visible">
+                            <span class="text-white-75">D</span><span class="text-white">M</span>
+                        </span>
+                        <span class="smini-hidden">
+                            <span class="text-white-75">Medianova </span> Chat
+                        </span>
+                    </a>
+                    <!-- END Logo -->
 
-      socket.on('chat message', function(msg) {
-        var item = document.createElement('li');
-        item.textContent = msg;
-        messages.appendChild(item);
-        window.scrollTo(0, document.body.scrollHeight);
-      });
-    </script>
-  </body>
+                    <!-- Options -->
+                    <div>
+                        <!-- Close Sidebar, Visible only on mobile screens -->
+                        <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
+                        <a class="d-lg-none text-white ml-2" data-toggle="layout" data-action="sidebar_close" href="javascript:void(0)">
+                            <i class="fa fa-times-circle"></i>
+                        </a>
+                        <!-- END Close Sidebar -->
+                    </div>
+                    <!-- END Options -->
+                </div>
+                <!-- END Side Header -->
+
+                <!-- People -->
+                <div class="content-side">
+                    <form class="push" action="" method="POST" onsubmit="return false;">
+                        <div class="input-group">
+                            <input class="form-control form-control-alt" placeholder="Search People..">
+                            <div class="input-group-append">
+                                <span class="input-group-text input-group-text-alt">
+                                    <i class="fa fa-fw fa-search"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="block pull-x">
+                        <!-- Online -->
+                        <div class="block-content block-content-sm block-content-full bg-body-light">
+                            <span class="text-uppercase font-size-sm font-w700">Online Users</span>
+                        </div>
+                        <div class="block-content px-0">
+                            <ul id="users" class="nav-items">
+                                
+                            </ul>
+                        </div>
+                        <!-- Online -->
+
+                      
+                    </div>
+                </div>
+                <!-- END People -->
+            </nav>
+            <!-- END Sidebar -->
+
+            <!-- Main Container -->
+            <main id="main-container">
+
+                <!-- Page Content -->
+                <!-- Chat functionality is initialized in js/pages/be_comp_chat.min.js which was auto compiled from _es6/pages/be_comp_chat.js -->
+                <!--
+                    You can use the following JS function to add a header message to a chat window:
+                    Chat.addHeader(chatId, chatMsg, chatMsgLevel)
+
+                    chatId         : the data-chat-id attribute of the chat window
+                    chatMsg        : the header message you would like to add
+                    chatMsgLevel   : 'self' aligns the header to the right (default is left)
+
+                    You can use the following JS function to add a message to a chat window:
+                    Chat.addMessage(chatId, chatMsg, chatMsgLevel)
+
+                    chatId         : the data-chat-id attribute of the chat window
+                    chatMsg        : the message you would like to add
+                    chatMsgLevel   : 'self' the user sends the message (default is when the user receives the message)
+                -->
+                <div class="block hero flex-column mb-0 bg-image" style="background-image: url('assets/media/photos/photo19@2x.jpg');">
+                    <!-- Chat #5 Header -->
+                    <div class="block-header block-header-default w-100 bg-white-95 shadow-lg" style="min-height: 70px; height: 70px;">
+                        <h3 class="block-title">
+                            <img class="img-avatar img-avatar32" src="assets/media/avatars/avatar7.jpg" alt="">
+                            <span id="userName" class="font-size-sm font-w600 ml-2"></span>
+                        </h3>
+                        <div class="block-options">
+                            <button type="button" class="btn-block-option">
+                                <i class="fa fa-cog"></i>
+                            </button>
+                            <button type="button" class="btn-block-option d-lg-none" data-toggle="layout" data-action="sidebar_toggle">
+                                <i class="fa fa-users"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- END Chat #5 Header -->
+
+                    <!-- Chat #5 Messages -->
+                    <div class="js-chat-messages block-content block-content-full text-wrap-break-word overflow-y-auto w-100 flex-grow-1 px-lg-8 px-xlg-10 bg-white-90" data-chat-id="5"></div>
+
+                    <!-- Chat #5 Input -->
+                    <div class="js-chat-form block-content p-3 w-100 d-flex align-items-center bg-white-95 shadow-lg" style="min-height: 70px; height: 70px;">
+                      <form class="w-100" action="db_chat.html" method="POST">
+                            <div class="input-group">
+                                <div class="input-group-prepend d-sm-none dropup">
+                                    
+                                </div>
+                                <div class="input-group-prepend d-none d-sm-flex">
+                                    
+                                </div>
+                                
+                                <input id="m" type="text" class="js-chat-input form-control form-control-alt border-0 bg-transparent" placeholder="Type a message..">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-link">
+                                        <i class="fab fa-telegram-plane"></i>
+                                        <span class="d-none d-sm-inline ml-1 font-w600">Send</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- END Chat #5 Input -->
+                </div>
+                <!-- END Page Content -->
+
+            </main>
+            <!-- END Main Container -->
+        </div>
+        <!-- END Page Container -->
+        <div class="modal" id="modal-block-normal" tabindex="-1" role="dialog" aria-labelledby="modal-block-normal" aria-hidden="true" style="display: none;">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="block block-themed block-transparent mb-0">
+                      <div class="block-header bg-primary-dark">
+                          <h3 class="block-title">Join Chat</h3>
+                          <div class="block-options">
+                              <button type="button" class="btn-block-option" data-dismiss="modal" aria-label="Close">
+                                  <i class="fa fa-fw fa-times"></i>
+                              </button>
+                          </div>
+                      </div>
+                      <div class="block-content">
+                        <div class="text-center">
+                          <h6>Welcome to Unipa-Chat</h6>
+                          <p>Please enter your name to join chat</p>
+                          <div class="form-group">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+                          </div>
+                        </div>
+                          
+                      </div>
+                      <div class="block-content block-content-full text-right bg-light">
+                          <button id="join" onclick="setName()" type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Join</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+        <script src="assets/js/dashmix.core.min.js"></script>
+
+        <!--
+            Dashmix JS
+
+            Custom functionality including Blocks/Layout API as well as other vital and optional helpers
+            webpack is putting everything together at assets/_es6/main/app.js
+        -->
+        <script src="assets/js/dashmix.app.min.js"></script>
+
+        <!-- Page JS Code -->
+        <script src="assets/js/pages/be_comp_chat.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+          let userName = "";
+          let onlineUsers = [];
+
+          function setName(){
+            userName = $("#name").val();
+            $("#userName").text(userName);
+          }
+           $(document).ready(function(){
+            jQuery('#modal-block-normal').modal('show');
+           });
+
+        
+          $(function () {
+            var socket = io();
+            $('form').submit(function(){
+              // Emmit message
+              message = { "who": userName, "message":$('#m').val()}
+              socket.emit('chat message', message);
+              $('#m').val('');
+              return false;
+            });
+            socket.on('chat message', function(msg){
+              jQuery(function () {
+                // Add demonstration headers and messages for Chat 
+                if(msg.who == userName){
+                  Chat.addHeader(5, msg.who,'self');
+                 Chat.addMessage(5, msg.message,'self');
+                }else{
+                  Chat.addHeader(5, msg.who);
+                  Chat.addMessage(5, msg.message);
+                }
+
+                // check online users
+                if(!(onlineUsers.includes(msg.who))){
+                  onlineUsers.push(msg.who);
+                  let userDiv = '<li><a class="media py-2" href="javascript:void(0)"><div class="mx-3 overlay-container">'+
+                                '<img class="img-avatar img-avatar48" src="assets/media/avatars/avatar5.jpg" alt="">'+
+                                '<span class="overlay-item item item-tiny item-circle border border-2x border-white bg-success"></span></div>'+
+                                 '<div class="media-body"><div class="font-w600">'+msg.who+'</div> </div> </a</li>';
+                  $("#users").prepend(userDiv);
+                }
+              });
+            });
+          });
+        </script>
+        
+    </body>
 </html>
