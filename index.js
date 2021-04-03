@@ -1,21 +1,33 @@
-var express = require('express');
-const app = express();
-var http = require('http').Server(app);
+var app = require('express')();
+var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-var port = process.env.PORT || 3000;
 
 
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
-});
-
-// Socket io 
 io.on('connection', function(socket){
-  socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
-  });
+    console.log('a user connected');
+    //Taking username
+    socket.on('joined',function (name) {
+        this.name = name;
+        socket.broadcast.emit('broadcast',name +' joined to Room!');
+    });
+    //If the user left
+    socket.on('disconnect', function(){
+        console.log(' disconnected');
+        socket.broadcast.emit('broadcast',this.name +' left the Room!');
+    });
+    //Taking message
+    socket.on('chat message', function(data){
+        console.log(data);
+        console.log(data.username +' : ' + data.message);
+        io.emit('chat message', data.username +' : ' + data.message);
+    });
+    socket.on('typing',function (name) {
+        console.log(name);
+        console.log("typing");
+        socket.broadcast.emit('typing',name +' is typing!');
+    })
 });
 
-http.listen(port, function(){
-  console.log('listening on *:' + port);
+http.listen(3000, function(){
+    console.log('listening on *:3000');
 });
