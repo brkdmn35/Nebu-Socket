@@ -5,7 +5,7 @@
   "description": "Socket service for nebu",
   "main": "index.js",
   "scripts": {
-    "serve": "hexo serve",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
