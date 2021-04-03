@@ -1,42 +1,22 @@
-const app = require('express')();
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
+var express = require('express');
+const app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+var port = process.env.PORT || 3000;
 
 
+app.get('/', function(req, res){
+  res.sendFile(__dirname + '/index.html');
+});
+app.use(express.static('public'));
 
-io.use((socket, next) => {
-    console.log('auth check', socket);
-    const sessionID = socket.handshake.auth.sessionID;
-    if (sessionID) {
-      // find existing session
-      const session = sessionStore.findSession(sessionID);
-      if (session) {
-        socket.sessionID = sessionID;
-        socket.userID = session.userID;
-        return next();
-      } else {
-        socket.sessionID = sessionID;
-        socket.userID = randomId();
-        next();
-      }
-    }else {
-        return next(new Error("invalid auth"));
-    }
+// Socket io 
+io.on('connection', function(socket){
+  socket.on('chat message', function(msg){
+    io.emit('chat message', msg);
   });
-
-
-io.on('connection', (socket) => {
-  console.log("Baglantı ok ", socket.userID)
-
-  socket.emit("session", {
-    sessionID: socket.sessionID,
-    userID: socket.userID,
-  });
-
 });
 
-
-
-server.listen(3000,() => {
-    console.log('listening on *:3000');
-  });
+http.listen(port, function(){
+  console.log('listening on *:' + port);
+});
