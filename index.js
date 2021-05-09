@@ -54,6 +54,18 @@ io.on('connection', function (socket) {
 
     socket.on('message', receivedMessage);
 
+    socket.on('leave-game', function () {
+        console.log('game deleted', gameId);
+        io.of('/').in(gameId).clients((error, socketIds) => {
+            if (error) throw error;
+
+            socketIds.forEach(socketId => { io.sockets.sockets[socketId].leave(gameId) });
+
+        });
+        delete state[gameId];
+        delete clientRooms[socket.id]
+    });
+
     socket.on('search-game', function () {
         console.log('user list', users);
         const rooms = io.sockets.adapter.rooms;
@@ -92,18 +104,6 @@ io.on('connection', function (socket) {
         socket.join(gameId);
         socket.number = 1;
         socket.emit('init', 1);
-
-        socket.on('leave-game', function () {
-            console.log('game deleted', gameId);
-            io.of('/').in(gameId).clients((error, socketIds) => {
-                if (error) throw error;
-
-                socketIds.forEach(socketId => { io.sockets.sockets[socketId].leave(gameId) });
-
-            });
-            delete state[gameId];
-            delete clientRooms[socket.id]
-        });
     }
 
     function joinGame(gameId) {
