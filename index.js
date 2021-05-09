@@ -98,7 +98,10 @@ io.on('connection', function (socket) {
             io.of('/').in(gameId).clients((error, socketIds) => {
                 if (error) throw error;
 
-                socketIds.forEach(socketId => io.sockets.sockets[socketId].leave(gameId));
+                socketIds.forEach(socketId => {
+                    closeGameListens(io.sockets.sockets[socketId]);
+                    io.sockets.sockets[socketId].leave(gameId)
+                });
 
             });
             delete state[gameId];
@@ -218,6 +221,10 @@ io.on('connection', function (socket) {
     function emitGameOver(gameId, winner) {
         io.sockets.in(gameId)
             .emit('gameOver', JSON.stringify({ winner }));
+    }
+
+    function closeGameListens(clientSocket) {
+        clientSocket.off('message');
     }
 
 });
