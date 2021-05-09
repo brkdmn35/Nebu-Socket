@@ -37,6 +37,7 @@ io.use((socket, next) => {
 
 io.on('connection', function (socket) {
     console.log('a user connected', socket.id);
+    socket.type = 'user';
     users[socket.id] = {
         name: socket.handshake.headers.name ? socket.handshake.headers.name : '',
         token: socket.handshake.headers.authorization ? socket.handshake.headers.authorization : ''
