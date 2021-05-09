@@ -39,7 +39,7 @@ io.on('connection', function (socket) {
     console.log('a user connected', socket.id);
     console.log('odalar', socket.id, io.sockets.adapter.rooms);
     socket.leave(socket.id)
-    console.log('bağlı socketler', io.sockets.sockets);
+    console.log('bağlı socketler', Object.keys(io.sockets.sockets));
 
     socket.type = 'user';
     users[socket.id] = {
@@ -224,7 +224,8 @@ io.on('connection', function (socket) {
     }
 
     function closeGameListens(clientSocket) {
-        clientSocket.off('message');
+        console.log('listen delete', clientSocket)
+        clientSocket.socket.off('message');
     }
 
 });
