@@ -91,6 +91,7 @@ io.on('connection', function (socket) {
         socket.join(gameId);
         socket.number = 1;
         socket.emit('init', 1);
+        socket.on('message', receivedMessage);
 
         socket.on('leave-game', function () {
             console.log('game deleted', gameId);
@@ -145,7 +146,7 @@ io.on('connection', function (socket) {
                 clearInterval(intervalId);
                 return;
             }
-            
+
             state[gameId].time -= 1;
             
             emitGameState(gameId, state[gameId])
