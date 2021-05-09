@@ -61,8 +61,8 @@ io.on('connection', function (socket) {
             for (var room in rooms) {
                 console.log('kontrol oda', room, rooms[room], rooms[room].length , (rooms[room].length == 1));
                 if (rooms[room].length == 1) {
+                    console.log('room kontrol', room, clientRooms);
                     gameId = clientRooms[room];
-                    socketId = room;
                     break;
                 }
             }
@@ -70,7 +70,7 @@ io.on('connection', function (socket) {
         }
 
         if (gameId) {
-            joinGame(gameId, socketId);
+            joinGame(gameId);
         } else {
             createGame();
         }
