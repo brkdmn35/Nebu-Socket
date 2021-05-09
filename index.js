@@ -201,7 +201,8 @@ io.on('connection', function (socket) {
     }
 
 });
+var server_port = process.env.PORT || 3000;
 
-http.listen(3000, function () {
-    console.log('listening on *:3000');
+http.listen(server_port, function () {
+    console.log('listening on *:', server_port);
 });
