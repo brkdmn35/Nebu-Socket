@@ -17,7 +17,7 @@ app.get('/', function (req, res) {
 
 io.use((socket, next) => {
     const header = socket.handshake.headers.authorization;
-    console.log('auth', header);
+    console.log('auth', socket.id, header);
     if (header) {
         console.log(users[socket.id], socket.handshake.headers.name)
         if (users[socket.id] && users[socket.id].name != socket.handshake.headers.name) {
