@@ -120,6 +120,7 @@ io.on('connection', function (socket) {
         socket.join(gameId);
         socket.number = 2;
         socket.emit('init', 2);
+        socket.in(gameId).emit('init', 2);
 
         console.log('trying', room)
 
