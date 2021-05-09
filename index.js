@@ -59,7 +59,7 @@ io.on('connection', function (socket) {
         if (rooms) {
             console.log('odalar', rooms);
             for (var room in rooms) {
-                console.log('kontrol oda', room, rooms[room]);
+                console.log('kontrol oda', room, rooms[room], rooms[room].length , (rooms[room].length == 1));
                 if (rooms[room].length == 1) {
                     gameId = clientRooms[room];
                     socketId = room;
