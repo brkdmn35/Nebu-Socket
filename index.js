@@ -224,5 +224,5 @@ io.on('connection', function (socket) {
 var server_port = process.env.PORT || 3000;
 
 http.listen(server_port, function () {
-    console.log('listen nebu socket *:', server_port);
+    console.log('listening nebu socket *:', server_port);
 });
