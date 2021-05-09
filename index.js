@@ -17,7 +17,7 @@ app.get('/', function (req, res) {
 
 io.use((socket, next) => {
     const header = socket.handshake.headers.authorization;
-    console.log('auth', socket.id, header);
+    console.log('auth', socket.id, socket.handshake.headers.name);
     if (header) {
         console.log(users[socket.id], socket.handshake.headers.name)
         if (users[socket.id] && users[socket.id].name != socket.handshake.headers.name) {
@@ -37,9 +37,9 @@ io.use((socket, next) => {
 
 io.on('connection', function (socket) {
     console.log('a user connected', socket.id);
-    console.log('oda oluşturdu mu', socket.id, io.sockets.adapter.rooms);
+    console.log('odalar', socket.id, io.sockets.adapter.rooms);
     socket.leave(socket.id)
-    console.log('oda silindi mi', socket.id, io.sockets.adapter.rooms);
+    console.log('bağlı socketler', io.sockets.sockets);
 
     socket.type = 'user';
     users[socket.id] = {
