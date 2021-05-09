@@ -140,12 +140,13 @@ io.on('connection', function (socket) {
 
         const intervalId = setInterval(() => {
             const winner = gameLoop(state[gameId]);
-            state[gameId].time -= 1;
 
             if(!state[gameId]) {
                 clearInterval(intervalId);
                 return;
             }
+            
+            state[gameId].time -= 1;
             
             emitGameState(gameId, state[gameId])
 
