@@ -52,6 +52,7 @@ io.on('connection', function (socket) {
         console.log(' disconnected');
     });
 
+    socket.on('message', receivedMessage);
 
     socket.on('search-game', function () {
         console.log('user list', users);
@@ -91,17 +92,13 @@ io.on('connection', function (socket) {
         socket.join(gameId);
         socket.number = 1;
         socket.emit('init', 1);
-        socket.on('message', receivedMessage);
 
         socket.on('leave-game', function () {
             console.log('game deleted', gameId);
             io.of('/').in(gameId).clients((error, socketIds) => {
                 if (error) throw error;
 
-                socketIds.forEach(socketId => {
-                    closeGameListens(io.sockets.sockets[socketId]);
-                    io.sockets.sockets[socketId].leave(gameId)
-                });
+                socketIds.forEach(socketId => { io.sockets.sockets[socketId].leave(gameId) });
 
             });
             delete state[gameId];
@@ -144,8 +141,6 @@ io.on('connection', function (socket) {
     }
 
     function startGameInterval(gameId) {
-        socket.on('message', receivedMessage);
-
 
         const intervalId = setInterval(() => {
             const winner = gameLoop(state[gameId]);
@@ -221,11 +216,6 @@ io.on('connection', function (socket) {
     function emitGameOver(gameId, winner) {
         io.sockets.in(gameId)
             .emit('gameOver', JSON.stringify({ winner }));
-    }
-
-    function closeGameListens(clientSocket) {
-        console.log('listen delete', clientSocket)
-        clientSocket.socket.off('message');
     }
 
 });
