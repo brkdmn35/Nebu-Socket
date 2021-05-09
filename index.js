@@ -64,7 +64,7 @@ io.on('connection', function (socket) {
         if (rooms) {
             console.log('odalar', rooms);
             for (var room in rooms) {
-                console.log('kontrol oda', room, rooms[room], rooms[room].length , (rooms[room].length == 1));
+                console.log('kontrol oda', room, rooms[room], rooms[room].length, (rooms[room].length == 1));
                 if (rooms[room].length == 1) {
                     console.log('room kontrol', room, clientRooms);
                     gameId = room;
@@ -95,8 +95,11 @@ io.on('connection', function (socket) {
 
         socket.on('leave-game', function () {
             console.log('game deleted', gameId);
-            io.sockets.clients(gameId).forEach(function(s){
-                s.leave(gameId);
+            io.of('/').in(gameId).clients((error, socketIds) => {
+                if (error) throw error;
+
+                socketIds.forEach(socketId => io.sockets.sockets[socketId].leave(gameId));
+
             });
             delete state[gameId];
             delete clientRooms[socket.id]
@@ -144,13 +147,13 @@ io.on('connection', function (socket) {
         const intervalId = setInterval(() => {
             const winner = gameLoop(state[gameId]);
 
-            if(!state[gameId]) {
+            if (!state[gameId]) {
                 clearInterval(intervalId);
                 return;
             }
 
             state[gameId].time -= 1;
-            
+
             emitGameState(gameId, state[gameId])
 
             if (!winner) {
@@ -173,12 +176,12 @@ io.on('connection', function (socket) {
 
 
         if (message) {
-            if(gameState.answers[gameState.step] == message) {
+            if (gameState.answers[gameState.step] == message) {
                 console.log('doğru cevap a.qqq');
-                state[gameId].messages.push({ user: socket.name, text: message, status: 'win'})
+                state[gameId].messages.push({ user: socket.name, text: message, status: 'win' })
                 nextRound(gameId);
             } else {
-                state[gameId].messages.push({ user: socket.name, text: message, status: null})
+                state[gameId].messages.push({ user: socket.name, text: message, status: null })
             }
         }
         io.sockets.in(gameId)
@@ -200,7 +203,7 @@ io.on('connection', function (socket) {
         // Send this event to everyone in the gameId.
         io.sockets.in(gameId)
             .emit('gameState', {
-                time: gameState.time                
+                time: gameState.time
             });
     }
 
@@ -208,7 +211,7 @@ io.on('connection', function (socket) {
         // Send this event to everyone in the gameId.
         io.sockets.in(gameId)
             .emit('gameState', {
-                time: gameState.time                
+                time: gameState.time
             });
     }
 
