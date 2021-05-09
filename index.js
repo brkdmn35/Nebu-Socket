@@ -95,7 +95,9 @@ io.on('connection', function (socket) {
 
         socket.on('leave-game', function () {
             console.log('game deleted', gameId);
-            socket.leave(gameId);
+            io.sockets.clients(gameId).forEach(function(s){
+                s.leave(gameId);
+            });
             delete state[gameId];
             delete clientRooms[socket.id]
         });
