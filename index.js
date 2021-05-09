@@ -38,6 +38,9 @@ io.use((socket, next) => {
 io.on('connection', function (socket) {
     console.log('a user connected', socket.id);
     console.log('oda oluşturdu mu', socket.id, io.sockets.adapter.rooms);
+    socket.leave(socket.id)
+    console.log('oda silindi mi', socket.id, io.sockets.adapter.rooms);
+
     socket.type = 'user';
     users[socket.id] = {
         name: socket.handshake.headers.name ? socket.handshake.headers.name : '',
