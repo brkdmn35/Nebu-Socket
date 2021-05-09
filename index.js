@@ -6,7 +6,7 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
-let waitings = [];
+let gameRooms = [];
 var users = {};
 const clientRooms = {};
 const state = {};
@@ -37,6 +37,7 @@ io.use((socket, next) => {
 
 io.on('connection', function (socket) {
     console.log('a user connected', socket.id);
+    console.log('oda oluşturdu mu', socket.id, io.sockets.adapter.rooms);
     socket.type = 'user';
     users[socket.id] = {
         name: socket.handshake.headers.name ? socket.handshake.headers.name : '',
