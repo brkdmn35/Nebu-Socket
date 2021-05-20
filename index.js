@@ -80,6 +80,17 @@ io.on('connection', function (socket) {
         } else {
             createGame();
         }
+
+        socket.on('leave-game', function (userGameId) {
+            console.log('game deleted', userGameId);
+            io.of('/').in(userGameId).clients((error, socketIds) => {
+                if (error) throw error;
+                socketIds.forEach(socketId => { io.sockets.sockets[socketId].leave(userGameId) });
+            });
+            delete state[userGameId];
+            delete clientRooms[socket.id]
+        });
+        
     });
 
     function createGame() {
@@ -93,17 +104,6 @@ io.on('connection', function (socket) {
         socket.number = 1;
         socket.emit('init', 1);
 
-        socket.on('leave-game', function () {
-            console.log('game deleted', gameId);
-            io.of('/').in(gameId).clients((error, socketIds) => {
-                if (error) throw error;
-
-                socketIds.forEach(socketId => { io.sockets.sockets[socketId].leave(gameId) });
-
-            });
-            delete state[gameId];
-            delete clientRooms[socket.id]
-        });
     }
 
     function joinGame(gameId) {

@@ -30,7 +30,7 @@
     var username = prompt("Please enter your name to chat");
     $("#m").attr("placeholder", username+":");
     $(function () {
-        var socket = io.connect('http://localhost:3000');
+        var socket = io.connect('https://nebu-socket.herokuapp.com:27672');
         //Information to server your name...
         socket.emit('joined',username);
         //Sending information to other users...
