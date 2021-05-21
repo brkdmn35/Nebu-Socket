@@ -13,8 +13,8 @@ function initGame() {
 function createGameState() {
   return {
     players: [
-      {score:0},
-      {score:0},
+      { score: 0 },
+      { score: 0 },
     ],
     step: 0,
     stepCounter: 5,
@@ -28,13 +28,15 @@ function createGameState() {
 
 function gameLoop(state) {
   if (!state) {
-    return;
+    return {};
   } else {
     let response = {};
     console.log('control', state.stepCounter);
-    if(state.stepCounter >= 5) {
+    if (state.stepCounter >= 5) {
       response['card'] = state.openedCards[state.openCardIndex];
       return response;
+    } else {
+      return {};
     }
   }
 }
