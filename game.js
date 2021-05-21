@@ -31,9 +31,10 @@ function gameLoop(state) {
     return;
   } else {
     let response = {};
+    console.log('control', state.stepCounter);
     if(state.stepCounter >= 5) {
       response['card'] = state.openedCards[state.openCardIndex];
+      return response;
     }
   }
-  return response;
 }
