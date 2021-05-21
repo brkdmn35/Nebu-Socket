@@ -32,7 +32,7 @@ function gameLoop(state) {
   } else {
     let response = {};
     if(state.stepCounter >= 5) {
-      response['card'] = openedCards[openCardIndex];
+      response['card'] = state.openedCards[state.openCardIndex];
     }
   }
   return response;
