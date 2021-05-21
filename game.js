@@ -1,3 +1,4 @@
+const { shuffleArray } = require('./utils');
 
 module.exports = {
   initGame,
@@ -16,9 +17,11 @@ function createGameState() {
       {score:0},
     ],
     step: 0,
+    stepCounter: 5,
+    openCardIndex: 0,
     answers: ['saat kulesi', 'saat kulesi2', 'saat kulesi3', 'saat kulesi4', 'saat kulesi5'],
     time: 125,
-    openedCards: [],
+    openedCards: shuffleArray([...Array(25).keys()]),
     messages: [],
   };
 }
@@ -26,6 +29,11 @@ function createGameState() {
 function gameLoop(state) {
   if (!state) {
     return;
+  } else {
+    let response = {};
+    if(state.stepCounter >= 5) {
+      response['card'] = openedCards[openCardIndex];
+    }
   }
-  return;
+  return response;
 }

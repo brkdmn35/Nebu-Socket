@@ -80,7 +80,7 @@ io.on('connection', function (socket) {
         } else {
             createGame();
         }
-        
+
     });
 
     socket.on('leave-game', function (userGameId) {
@@ -143,21 +143,26 @@ io.on('connection', function (socket) {
     function startGameInterval(gameId) {
 
         const intervalId = setInterval(() => {
-            const winner = gameLoop(state[gameId]);
+            const newTurn = gameLoop(state[gameId]);
 
             if (!state[gameId]) {
                 clearInterval(intervalId);
                 return;
             }
 
-            state[gameId].time -= 1;
-
-            emitGameState(gameId, state[gameId])
-
-            if (!winner) {
+            if (!newTurn.winner) {
+                console.log('no winner', newTurn);
+                if (newTurn.card) {
+                    state[gameId].stepCounter = 1;
+                    state[gameId].openCardIndex += 1;
+                    io.sockets.in(gameId)
+                        .emit('openCard', newTurn.card);
+                }
+                state[gameId].time -= 1;
+                emitGameState(gameId, state[gameId])
 
             } else {
-                emitGameOver(gameId, winner);
+                emitGameOver(gameId, newTurn.winner);
                 state[gameId] = null;
                 clearInterval(intervalId);
             }
@@ -194,14 +199,6 @@ io.on('connection', function (socket) {
         io.sockets.in(gameId)
             .emit('nextRound', {
                 players: state[gameId].players
-            });
-    }
-
-    function emitGameState(gameId, gameState) {
-        // Send this event to everyone in the gameId.
-        io.sockets.in(gameId)
-            .emit('gameState', {
-                time: gameState.time
             });
     }
 
