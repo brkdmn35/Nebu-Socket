@@ -157,6 +157,8 @@ io.on('connection', function (socket) {
                     state[gameId].openCardIndex += 1;
                     io.sockets.in(gameId)
                         .emit('openCard', newTurn.card);
+                } else {
+                    state[gameId].stepCounter += 1;
                 }
                 state[gameId].time -= 1;
                 emitGameState(gameId, state[gameId])
