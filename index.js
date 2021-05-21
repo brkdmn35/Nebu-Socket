@@ -152,7 +152,7 @@ io.on('connection', function (socket) {
 
             if (!newTurn.winner) {
                 console.log('no winner', newTurn);
-                if (newTurn.card) {
+                if (newTurn.card || newTurn.card >= 0) {
                     state[gameId].stepCounter = 1;
                     state[gameId].openCardIndex += 1;
                     io.sockets.in(gameId)
