@@ -150,21 +150,23 @@ io.on('connection', function (socket) {
                 return;
             }
 
-            if (!newTurn.winner) {
-                console.log('no winner', newTurn);
-                if (newTurn.card) {
-                    state[gameId].stepCounter = 1;
-                    state[gameId].openCardIndex += 1;
-                    io.sockets.in(gameId)
-                        .emit('openCard', newTurn.card);
-                }
-                state[gameId].time -= 1;
-                emitGameState(gameId, state[gameId])
+            if (newTurn) {
+                if (!newTurn.winner) {
+                    console.log('no winner', newTurn);
+                    if (newTurn.card) {
+                        state[gameId].stepCounter = 1;
+                        state[gameId].openCardIndex += 1;
+                        io.sockets.in(gameId)
+                            .emit('openCard', newTurn.card);
+                    }
+                    state[gameId].time -= 1;
+                    emitGameState(gameId, state[gameId])
 
-            } else {
-                emitGameOver(gameId, newTurn.winner);
-                state[gameId] = null;
-                clearInterval(intervalId);
+                } else {
+                    emitGameOver(gameId, newTurn.winner);
+                    state[gameId] = null;
+                    clearInterval(intervalId);
+                }
             }
         }, 1000);
     }
