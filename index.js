@@ -186,7 +186,7 @@ io.on('connection', function (socket) {
 
 
         if (message) {
-            if (gameState.answers[gameState.step] == message) {
+            if (gameState.answers[gameState.step].toLowerCase() == message.toLowerCase()) {
                 console.log('doğru cevap a.qqq');
                 state[gameId].messages.push({ user: socket.name, text: message, status: 'win' })
                 nextRound(gameId);
@@ -219,6 +219,7 @@ io.on('connection', function (socket) {
     }
 
     function emitGameOver(gameId, winner) {
+        delete state[gameId];
         io.sockets.in(gameId)
             .emit('gameOver', winner);
     }
