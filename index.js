@@ -136,7 +136,7 @@ io.on('connection', function (socket) {
         socket.in(gameId).emit('init', 2);
 
         console.log('trying', room)
-        
+
         startGameInterval(gameId);
     }
 
@@ -190,6 +190,8 @@ io.on('connection', function (socket) {
                 console.log('doğru cevap a.qqq');
                 state[gameId].messages.push({ user: socket.name, text: message, status: 'win' })
                 nextRound(gameId);
+            } else if (gameState.answers[gameState.step].toLowerCase().includes(message.toLowerCase())) {
+                state[gameId].messages.push({ user: socket.name, text: message, status: 'close' })
             } else {
                 state[gameId].messages.push({ user: socket.name, text: message, status: null })
             }
