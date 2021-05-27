@@ -6,7 +6,6 @@ var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
-let gameRooms = [];
 var users = {};
 const clientRooms = {};
 const state = {};
@@ -133,6 +132,7 @@ io.on('connection', function (socket) {
         socket.join(gameId);
         socket.number = 2;
         socket.emit('init', 2);
+        socket.emit('gameCode', gameId);
         socket.in(gameId).emit('init', 2);
 
         console.log('trying', room)
@@ -220,7 +220,7 @@ io.on('connection', function (socket) {
 
     function emitGameOver(gameId, winner) {
         io.sockets.in(gameId)
-            .emit('gameOver', JSON.stringify({ winner }));
+            .emit('gameOver', winner);
     }
 
 });

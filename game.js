@@ -41,9 +41,15 @@ function gameLoop(state) {
     console.log('control', state.stepCounter);
     if (state.stepCounter >= 5) {
       response['card'] = state.openedCards[state.openCardIndex];
-      return response;
-    } else {
-      return {};
     }
+    if (state.time <= 0) {
+      const players = state.players;
+      if (players[0].score == players[1]) {
+        response['winner'] = 2;
+      } else {
+        response['winner'] = players[0].score > players[1].score ? 0 : 1;
+      }
+    }
+    return response;
   }
 }
