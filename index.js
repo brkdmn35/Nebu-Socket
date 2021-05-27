@@ -136,11 +136,16 @@ io.on('connection', function (socket) {
         socket.in(gameId).emit('init', 2);
 
         console.log('trying', room)
-
+        
         startGameInterval(gameId);
     }
 
     function startGameInterval(gameId) {
+        const initialState = state[gameId];
+        io.sockets.in(gameId)
+            .emit('gameState', {
+                image: initialState.images[initialState.step]
+            });
 
         const intervalId = setInterval(() => {
             const newTurn = gameLoop(state[gameId]);
@@ -200,7 +205,8 @@ io.on('connection', function (socket) {
 
         io.sockets.in(gameId)
             .emit('nextRound', {
-                players: state[gameId].players
+                players: state[gameId].players,
+                image: state[gameId].images[state[gameId].step]
             });
     }
 
