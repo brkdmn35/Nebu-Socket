@@ -92,12 +92,12 @@ io.on('connection', function (socket) {
         delete clientRooms[socket.id]
     });
 
-    function createGame() {
+    async function createGame() {
         let gameId = makeid(5);
         clientRooms[socket.id] = gameId;
         socket.emit('gameCode', gameId);
 
-        state[gameId] = initGame();
+        state[gameId] = await initGame();
 
         socket.join(gameId);
         socket.number = 1;
