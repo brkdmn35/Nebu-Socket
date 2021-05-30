@@ -6,10 +6,8 @@ module.exports = {
   gameLoop
 }
 
-initGame();
 
 async function initGame() {
-  console.log('test oyun yaratılıyor');
   const gameResult = await axios.get('https://nebu-api.yazilimhayati.com/api/v1/question/list');
   const gameDatas = gameResult.data.data;
 
