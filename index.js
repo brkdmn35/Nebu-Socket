@@ -144,7 +144,7 @@ io.on('connection', function (socket) {
         const initialState = state[gameId];
         io.sockets.in(gameId)
             .emit('gameState', {
-                image: initialState.images[initialState.step]
+                image: initialState.gameCards[initialState.step].image_url
             });
 
         const intervalId = setInterval(() => {
@@ -186,11 +186,11 @@ io.on('connection', function (socket) {
 
 
         if (message) {
-            if (gameState.answers[gameState.step].toLowerCase() == message.toLowerCase()) {
+            if (gameState.gameCards[gameState.step].answer.toLowerCase() == message.toLowerCase()) {
                 console.log('doğru cevap a.qqq');
                 state[gameId].messages.push({ user: socket.name, text: message, status: 'win' })
                 nextRound(gameId);
-            } else if (gameState.answers[gameState.step].toLowerCase().includes(message.toLowerCase())) {
+            } else if (gameState.gameCards[gameState.step].answer.toLowerCase().includes(message.toLowerCase())) {
                 state[gameId].messages.push({ user: socket.name, text: message, status: 'close' })
             } else {
                 state[gameId].messages.push({ user: socket.name, text: message, status: null })
@@ -208,7 +208,7 @@ io.on('connection', function (socket) {
         io.sockets.in(gameId)
             .emit('nextRound', {
                 players: state[gameId].players,
-                image: state[gameId].images[state[gameId].step]
+                image: state[gameId].gameCards[state[gameId].step].image_url
             });
     }
 
