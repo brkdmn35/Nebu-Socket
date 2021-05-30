@@ -142,6 +142,7 @@ io.on('connection', function (socket) {
 
     function startGameInterval(gameId) {
         const initialState = state[gameId];
+        console.log('initialState', initialState.gameCards[initialState.step]);
         io.sockets.in(gameId)
             .emit('gameState', {
                 image: initialState.gameCards[initialState.step].image_url
