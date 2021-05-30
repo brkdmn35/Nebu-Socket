@@ -142,10 +142,10 @@ io.on('connection', function (socket) {
 
     function startGameInterval(gameId) {
         const initialState = state[gameId];
-        console.log('initialState', 'https://nebu-api.yazilimhatai.com' + initialState.gameCards[initialState.step].image_url);
+        console.log('initialState', 'https://nebu-api.yazilimhayati.com' + initialState.gameCards[initialState.step].image_url);
         io.sockets.in(gameId)
             .emit('gameState', {
-                image: 'https://nebu-api.yazilimhatai.com' + initialState.gameCards[initialState.step].image_url
+                image: 'https://nebu-api.yazilimhayati.com' + initialState.gameCards[initialState.step].image_url
             });
 
         const intervalId = setInterval(() => {
@@ -209,7 +209,7 @@ io.on('connection', function (socket) {
         io.sockets.in(gameId)
             .emit('nextRound', {
                 players: state[gameId].players,
-                image: 'https://nebu-api.yazilimhatai.com' + state[gameId].gameCards[state[gameId].step].image_url
+                image: 'https://nebu-api.yazilimhayati.com' + state[gameId].gameCards[state[gameId].step].image_url
             });
     }
 
