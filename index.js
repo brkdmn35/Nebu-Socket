@@ -145,7 +145,7 @@ io.on('connection', function (socket) {
         console.log('initialState', initialState.gameCards[initialState.step]);
         io.sockets.in(gameId)
             .emit('gameState', {
-                image: initialState.gameCards[initialState.step].image_url
+                image: 'https://nebu-api.yazilimhatai.com/' + initialState.gameCards[initialState.step].image_url
             });
 
         const intervalId = setInterval(() => {
@@ -209,7 +209,7 @@ io.on('connection', function (socket) {
         io.sockets.in(gameId)
             .emit('nextRound', {
                 players: state[gameId].players,
-                image: state[gameId].gameCards[state[gameId].step].image_url
+                image: 'https://nebu-api.yazilimhatai.com/' + state[gameId].gameCards[state[gameId].step].image_url
             });
     }
 
