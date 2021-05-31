@@ -11,10 +11,9 @@ async function initGame() {
   const gameResult = await axios.get('https://nebu-api.yazilimhayati.com/api/v1/question/list');
   const gameDatas = gameResult.data.data;
 
-  // Get sub-array of first n elements after shuffled
   let selecteds = shuffleArray(gameDatas).slice(0, 10);
-
   const state = await createGameState(selecteds)
+  
   return state;
 }
 

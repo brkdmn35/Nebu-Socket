@@ -1,5 +1,5 @@
 const { initGame, gameLoop } = require('./game');
-const { makeid } = require('./utils');
+const { makeid, shuffleArray } = require('./utils');
 
 
 var app = require('express')();
@@ -205,6 +205,8 @@ io.on('connection', function (socket) {
 
         state[gameId].step += 1;
         state[gameId].players[(socket.number - 1)].score += 1;
+        state[gameId].openCardIndex = 0;
+        state[gameId].openedCards = shuffleArray([...Array(25).keys()]);
 
         io.sockets.in(gameId)
             .emit('nextRound', {
