@@ -161,7 +161,7 @@ io.on('connection', function (socket) {
                 return;
             }
 
-            if (!newTurn.winner) {
+            if (!isNaN(newTurn.winner)) {
                 console.log('no winner', newTurn);
                 if (newTurn.card || newTurn.card >= 0) {
                     state[gameId].stepCounter = 1;
