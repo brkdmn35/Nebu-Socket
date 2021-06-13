@@ -235,6 +235,10 @@ io.on('connection', function (socket) {
 
     function checkCurrentGameConnection() {
         console.log('reconnection to current game', clientRooms);
+        const userGameId = clientRooms[socket.name];
+        if(userGameId) {
+            socket.join(userGameId);
+        }
     }
 
 });
