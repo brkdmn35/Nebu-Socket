@@ -7,12 +7,13 @@ module.exports = {
 }
 
 
-async function initGame() {
+async function initGame(initialUser) {
   const gameResult = await axios.get('https://nebu-api.yazilimhayati.com/api/v1/question/list');
   const gameDatas = gameResult.data.data;
 
   let selecteds = shuffleArray(gameDatas).slice(0, 10);
-  const state = await createGameState(selecteds)
+  let state = await createGameState(selecteds);
+  state[initialUser] = 1;
   
   return state;
 }

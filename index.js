@@ -101,7 +101,7 @@ io.on('connection', function (socket) {
         clientRooms[socket.name] = gameId;
         socket.emit('gameCode', gameId);
 
-        state[gameId] = await initGame();
+        state[gameId] = await initGame(socket.name);
 
         socket.join(gameId);
         socket.number = 1;
@@ -135,6 +135,7 @@ io.on('connection', function (socket) {
 
         socket.join(gameId);
         socket.number = 2;
+        state[gameId][socket.name] = 2;
         socket.emit('init', 2);
         socket.emit('gameCode', gameId);
         socket.in(gameId).emit('init', 2);
@@ -234,9 +235,10 @@ io.on('connection', function (socket) {
     }
 
     function checkCurrentGameConnection() {
-        console.log('reconnection to current game', clientRooms);
+        console.log('reconnection to current game', clientRooms,  state[userGameId]);
         const userGameId = clientRooms[socket.name];
         if(userGameId) {
+            socket.number = state[userGameId][socket.name]
             socket.join(userGameId);
         }
     }
