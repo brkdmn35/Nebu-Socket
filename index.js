@@ -89,12 +89,12 @@ io.on('connection', function (socket) {
             socketIds.forEach(socketId => { io.sockets.sockets[socketId].leave(userGameId) });
         });
         delete state[userGameId];
-        delete clientRooms[socket.id]
+        delete clientRooms[socket.name]
     });
 
     async function createGame() {
         let gameId = makeid(5);
-        clientRooms[socket.id] = gameId;
+        clientRooms[socket.name] = gameId;
         socket.emit('gameCode', gameId);
 
         state[gameId] = await initGame();
@@ -127,7 +127,7 @@ io.on('connection', function (socket) {
             return;
         }
 
-        clientRooms[socket.id] = gameId;
+        clientRooms[socket.name] = gameId;
 
         socket.join(gameId);
         socket.number = 2;
@@ -179,7 +179,7 @@ io.on('connection', function (socket) {
 
     function receivedMessage(message) {
         // Send this event to everyone in the gameId.
-        const gameId = clientRooms[socket.id];
+        const gameId = clientRooms[socket.name];
         if (!gameId || !message) {
             return;
         }
@@ -227,6 +227,10 @@ io.on('connection', function (socket) {
         delete state[gameId];
         io.sockets.in(gameId)
             .emit('gameOver', winner);
+    }
+
+    function checkCurrentGameConnection() {
+        console.log('reconnection to current game', clientRooms);
     }
 
 });
