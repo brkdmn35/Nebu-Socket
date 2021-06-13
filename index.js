@@ -17,6 +17,7 @@ app.get('/', function (req, res) {
 io.use((socket, next) => {
     const header = socket.handshake.headers.authorization;
     console.log('auth', socket.id, socket.handshake.headers.name);
+    socket.name = socket.handshake.headers.name;
     if (header) {
         console.log(users[socket.id], socket.handshake.headers.name)
         if (users[socket.id] && users[socket.id].name != socket.handshake.headers.name) {
@@ -35,7 +36,7 @@ io.use((socket, next) => {
 });
 
 io.on('connection', function (socket) {
-    console.log('a user connected', socket.id);
+    console.log('a user connected', socket.id, socket.name);
     console.log('odalar', socket.id, io.sockets.adapter.rooms);
     socket.leave(socket.id)
     console.log('bağlı socketler', Object.keys(io.sockets.sockets));
@@ -45,6 +46,9 @@ io.on('connection', function (socket) {
         name: socket.handshake.headers.name ? socket.handshake.headers.name : '',
         token: socket.handshake.headers.authorization ? socket.handshake.headers.authorization : ''
     }
+
+    checkCurrentGameConnection();
+
     //If the user left
     socket.on('disconnect', function () {
         delete users[socket.id];
